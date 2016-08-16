@@ -1,1 +1,0 @@
-# Large-Scale-3D-Scene-Recognition_CVPR2017
