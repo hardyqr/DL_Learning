@@ -1,5 +1,5 @@
 # Markdown Preview Test
-#LSTM Model
+#LSTM/RNN Model
 [*Understanding LSTM Networks*,by *colah*](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
 To start the Preview, press "shift+control+M "
@@ -7,10 +7,28 @@ To start the Preview, press "shift+control+M "
 
 ##Recurrent Neural Networks
 （recurrent, adj.周期性的）
-![](/Users/apple/Large_Scale_3D_Scene_Recognition_CVPR2017/RNN-rolled)
-![](/Users/apple/Large_Scale_3D_Scene_Recognition_CVPR2017/RNN-unrolled)
+
+- RNN-rolled
+
+![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-rolled.png?raw=true)
+
+- RNN-unrolled
+
+![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-unrolled.png?raw=true)
 
 
+[RNN's Applications:*The Unreasonable Effectiveness of Recurrent Neural Networks*,by *Andrej Karpathy*](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+
+
+##The Problem of Long-Term Dependencies
+
+- RNN Short-Term Dependencies
+
+![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-rolled.png?raw=true)
+
+- RNN Long-Term Dependencies
+
+![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-unrolled.png?raw=true)
 
 
 
