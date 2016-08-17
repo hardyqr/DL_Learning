@@ -1,0 +1,39 @@
+# Markdown Preview Test
+#LSTM Model
+[*Understanding LSTM Networks*,by *colah*](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+
+To start the Preview, press "shift+control+M "
+
+
+##Recurrent Neural Networks
+（recurrent, adj.周期性的）
+![](/Users/apple/Large_Scale_3D_Scene_Recognition_CVPR2017/RNN-rolled)
+![](/Users/apple/Large_Scale_3D_Scene_Recognition_CVPR2017/RNN-unrolled)
+
+
+
+
+
+Now we try to build model for language (some sentences).
+
+We have a list of words that appear in those sentences.
+
+$$w_1,w_2,...,w_T$$
+
+We define the probability of each word that appears like：
+
+
+
+$$P(w_1,w_2,...,w_T) = \prod_{t=1}^T P(w_t | w_{1:(t-1)})$$
+
+
+其中 $1 : (t - 1)$ 表示从 $1$ 到 $t-1$。因此我们希望模型能够给高的概率给更加合理的字符序列，而非乱序的组合。
+
+
+
+##Input Gate
+输入门：控制当前输入 $x_t$ 和前一步输出 $h_{t-1}$ 进入新的 cell 的信息量：
+
+##Forget Gate
+##Output Gate
+##
