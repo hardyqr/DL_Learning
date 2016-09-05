@@ -9,26 +9,28 @@ To start the Preview, press "shift+control+M "
 （recurrent, adj.周期性的）
 
 - RNN-rolled
+<center>
+<img width=200 src="./RNN-rolled.png"></img>
+</center>
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-rolled.png?raw=true)
 
 - RNN-unrolled
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-unrolled.png?raw=true)
+![](./RNN-unrolled.png)
 
 
-[RNN's Applications:*The Unreasonable Effectiveness of Recurrent Neural Networks*,by *Andrej Karpathy*](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+[RNN's Applications:*The Unreasonab""le Effectiveness of Recurrent Neural Networks*,by *Andrej Karpathy*](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 
 
 ##The Problem of Long-Term Dependencies
 
 - RNN Short-Term Dependencies
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-shorttermdepdencies.png?raw=true)
+![](./RNN-shorttermdepdencies.png)
 
 - RNN Long-Term Dependencies
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/RNN-longtermdependencies.png?raw=true)
+![](./RNN-longtermdependencies.png)
 
 Sometimes, near words(the last few) are enough to predict the next one. This is short-term dependency. Other times,we need more information which maybe several words we used few sentences before. This is called long-term dependency.
 
@@ -41,12 +43,12 @@ They were introduced by Hochreiter & Schmidhuber in 1997.[LONG SHORT-TERM MEMORY
 
 - Simple RNN
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/LSTM3-SimpleRNN.png?raw=true)
+![](./LSTM3-SimpleRNN.png)
 
 
 - RNN with internal chain structure (LSTMs unit)
 
-![](https://github.com/hardyqr/Large_Scale_3D_Scene_Recognition_CVPR2017/blob/master/LSTM3-chain.png?raw=true)
+![](./LSTM3-chain.png )
 
 
 
