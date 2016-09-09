@@ -1,11 +1,11 @@
 # Markdown Preview Test
-#LSTM/RNN Model
+# LSTM/RNN Model
 [*Understanding LSTM Networks*,by *colah*](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
 To start the Preview, press "shift+control+M "
 
 
-##Recurrent Neural Networks
+## Recurrent Neural Networks
 （recurrent, adj.周期性的）
 
 - RNN-rolled
@@ -22,7 +22,7 @@ To start the Preview, press "shift+control+M "
 [RNN's Applications:*The Unreasonab""le Effectiveness of Recurrent Neural Networks*,by *Andrej Karpathy*](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
 
 
-##The Problem of Long-Term Dependencies
+## The Problem of Long-Term Dependencies
 
 - RNN Short-Term Dependencies
 
@@ -34,7 +34,7 @@ To start the Preview, press "shift+control+M "
 
 Sometimes, near words(the last few) are enough to predict the next one. This is short-term dependency. Other times,we need more information which maybe several words we used few sentences before. This is called long-term dependency.
 
-#LSTM Networks
+# LSTM Networks
 
 Long Short Term Memory networks don't have this kind of problems. This is the kind of RNN that can learn long-term dependencies.
 
@@ -70,9 +70,19 @@ $$P(w_1,w_2,...,w_T) = \prod_{t=1}^T P(w_t | w_{1:(t-1)})$$
 
 
 
-##Input Gate
+## Input Gate
 输入门：控制当前输入 $x_t$ 和前一步输出 $h_{t-1}$ 进入新的 cell 的信息量：
 
-##Forget Gate
-##Output Gate
-##
+
+How do we understand $W_f·[h_(t-1),x_t]$ ?
+
+中括号是什么鬼？
+
+Use another representation:
+
+
+
+
+## Forget Gate
+## Output Gate
+## Variants on Long Short Term Memory
