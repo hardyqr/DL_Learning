@@ -10,16 +10,18 @@ display_step = 10
 
 # Network Parameters
 #n_input = 28 # MNIST data input (img shape: 28*28)
-n_input=6#Pointcloud data input(X,Y,Z,R,G,B)
+n_input_1=6#Pointcloud data input(X,Y,Z,R,G,B)
+n_input_2=12
 #n_steps = 28 # timesteps
 n_steps=1
 n_hidden = 128 # hidden layer num of features
 #n_classes = 10 # MNIST total classes (0-9 digits)
 n_classes=12#pointcloud total classes(5 furnitures,7 structral parts)
 
-
+trans_1=2
+trans_2=1
 # tf Graph input
-x = tf.placeholder("float", [batch_size, n_steps, n_input])
+x = tf.placeholder("float", [batch_size, n_steps, n_input_1])
 # Tensorflow LSTM cell requires 2x n_hidden length (state & cell)
 istate_fw_1 = tf.placeholder("float", [batch_size, 2*n_hidden])
 istate_bw_1 = tf.placeholder("float", [batch_size, 2*n_hidden])
@@ -30,17 +32,28 @@ istate_bw_2 = tf.placeholder("float", [batch_size, 2*n_hidden])
 y = tf.placeholder("float", [batch_size, n_classes])
 
 # Define weights
-weights = {
+weights_1 = {
     # Hidden layer weights => 2*n_hidden because of foward + backward cells
-    'hidden': tf.Variable(tf.random_normal([n_input, 2*n_hidden])),
+    'hidden': tf.Variable(tf.random_normal([n_input_1, 2*n_hidden])),
+    'out': tf.Variable(tf.random_normal([2*n_hidden, n_input_2]))
+}
+weights_2 = {
+    # Hidden layer weights => 2*n_hidden because of foward + backward cells
+    'hidden': tf.Variable(tf.random_normal([n_input_2, 2*n_hidden])),
     'out': tf.Variable(tf.random_normal([2*n_hidden, n_classes]))
 }
-biases = {
+
+biases_1 = {
+    'hidden': tf.Variable(tf.random_normal([2*n_hidden])),
+    'out': tf.Variable(tf.random_normal([n_input_2]))
+}
+
+biases_2= {
     'hidden': tf.Variable(tf.random_normal([2*n_hidden])),
     'out': tf.Variable(tf.random_normal([n_classes]))
 }
 
-def BiRNN(_X, _istate_fw, _istate_bw, _weights, _biases, _batch_size, _seq_len):
+def BiRNN(_X, _istate_fw, _istate_bw, _weights, _biases, _batch_size, _seq_len,_n_input,_transpose_parameter):
 
     # BiRNN requires to supply sequence_length as [batch_size, int64]
     # Note: Tensorflow 0.6.0 requires BiRNN sequence_length parameter to be set
@@ -48,9 +61,11 @@ def BiRNN(_X, _istate_fw, _istate_bw, _weights, _biases, _batch_size, _seq_len):
     _seq_len = tf.fill([_batch_size], tf.constant(_seq_len, dtype=tf.int64))
 
     # input shape: (batch_size, n_steps, n_input)
-    _X = tf.transpose(_X, [1, 0, 2])  # permute(变换) n_steps and batch_size
+    _X = tf.transpose(_X, [1, 0, _transpose_parameter])  # permute(变换) n_steps and batch_size
+'''重点看一下transpose这个函数，我觉得是这里出了问题'''
+
     # Reshape to prepare input to hidden activation
-    _X = tf.reshape(_X, [-1, n_input]) # (n_steps*batch_size, n_input)
+    _X = tf.reshape(_X, [-1, _n_input]) # (n_steps*batch_size, n_input)
     # Linear activation
     _X = tf.matmul(_X, _weights['hidden']) + _biases['hidden']
 
@@ -72,7 +87,7 @@ def BiRNN(_X, _istate_fw, _istate_bw, _weights, _biases, _batch_size, _seq_len):
     # Get inner loop last output
     return tf.matmul(outputs[-1], _weights['out']) + _biases['out']
 
-pred = BiRNN(BiRNN(x, istate_fw, istate_bw, weights, biases, batch_size, n_step),
+pred = BiRNN(BiRNN(x, istate_fw_1, istate_bw_1, weights_1, biases_1, batch_size, n_steps,n_input_1,trans_1),istate_fw_2, istate_bw_2, weights_2, biases_2, batch_size, n_steps,n_input_2,trans_2)
 
 
 # Define loss and optimizer
@@ -179,20 +194,20 @@ with tf.Session() as sess:
         #batch_xs, batch_ys = mnist.train.next_batch(batch_size)
             batch_xs=np.array(train_data[count:count+batch_size])
             batch_ys=np.array(train_labels[count:count+batch_size])
-            batch_xs = batch_xs.reshape((batch_size, n_steps, n_input))
+            batch_xs = batch_xs.reshape((batch_size, n_steps, n_input_1))
         # Fit training using batch data
             sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys,
-                                       istate_fw: np.zeros((batch_size, 2*n_hidden)),
-                                       istate_bw: np.zeros((batch_size, 2*n_hidden))})
+                                       istate_fw_1: np.zeros((batch_size, 2*n_hidden)),
+                                       istate_bw_1: np.zeros((batch_size, 2*n_hidden))})
             if step % display_step == 0:
             # Calculate batch accuracy
                 acc = sess.run(accuracy, feed_dict={x: batch_xs, y: batch_ys,
-                                                istate_fw: np.zeros((batch_size, 2*n_hidden)),
-                                                istate_bw: np.zeros((batch_size, 2*n_hidden))})
+                                                istate_fw_1: np.zeros((batch_size, 2*n_hidden)),
+                                                istate_bw_1: np.zeros((batch_size, 2*n_hidden))})
             # Calculate batch loss
                 loss = sess.run(cost, feed_dict={x: batch_xs, y: batch_ys,
-                                             istate_fw: np.zeros((batch_size, 2*n_hidden)),
-                                             istate_bw: np.zeros((batch_size, 2*n_hidden))})
+                                             istate_fw_1: np.zeros((batch_size, 2*n_hidden)),
+                                             istate_bw_1: np.zeros((batch_size, 2*n_hidden))})
                 print("Iter " + str(step*batch_size) + ", Minibatch Loss= " + "{:.6f}".format(loss) +
                   ", Training Accuracy= " + "{:.5f}".format(acc))
             step += 1
@@ -226,11 +241,11 @@ with tf.Session() as sess:
 
 
     test_len = 128
-    test_data = np.array(test_data[:test_len]).reshape((-1, n_steps, n_input))
+    test_data = np.array(test_data[:test_len]).reshape((-1, n_steps, n_input_1))
     test_label =np.array(test_label[:test_len])
     print("Testing Accuracy:", sess.run(accuracy, feed_dict={x: test_data, y: test_label,
-                                                             istate_fw: np.zeros((test_len, 2*n_hidden)),
-                                                             istate_bw: np.zeros((test_len, 2*n_hidden))}))
+                                                             istate_fw_1: np.zeros((test_len, 2*n_hidden)),
+                                                             istate_bw_1: np.zeros((test_len, 2*n_hidden))}))
 
     f = open('/Users/Fangyu/Documents/GitHub/Large_Scale_3D_Scene_Recognition_CVPR2017/codes_learning_notes/LSTM_model_pointcloud/chair_2.txt', 'r')
     test_data=[]
@@ -250,11 +265,11 @@ with tf.Session() as sess:
 
 
     test_len = 128
-    test_data = np.array(test_data[:test_len]).reshape((-1, n_steps, n_input))
+    test_data = np.array(test_data[:test_len]).reshape((-1, n_steps, n_input_1))
     test_label =np.array(test_label[:test_len])
     print("Testing Accuracy:", sess.run(accuracy, feed_dict={x: test_data, y: test_label,
-                                                         istate_fw: np.zeros((test_len, 2*n_hidden)),
-                                                         istate_bw: np.zeros((test_len, 2*n_hidden))}))
+                                                         istate_fw_1: np.zeros((test_len, 2*n_hidden)),
+                                                         istate_bw_1: np.zeros((test_len, 2*n_hidden))}))
 
 '''
 for line in train_data:
