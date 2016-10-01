@@ -91,10 +91,9 @@ data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8
 #sg28_station4
 
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/sg28_station4_intensity_rgb.labels','r')
-data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/sg28_station4_intensity_rgb.txt', 'r')
-data_with_label_20percent=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/sg28_station4_xyz_intensity_rgb_label_20percent.txt','w')
-data_6d_20percent=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/sg28_station4_xyz_rgb_20percent.txt','w')
-
+#data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/sg28_station4_intensity_rgb.txt', 'r')
+#data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/sg28_station4_xyz_intensity_rgb_label.txt','w')
+#data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/sg28_station4_xyz_rgb.txt','w')
 
 #untermaederbrunnen_station1
 '''
@@ -113,11 +112,10 @@ data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8
 
 '''
 
-labels=[]
-for line in data_label:
-    labels.append(line[0])
+import numpy as np
+import matplotlib.pyplot as plt
 
-count=0
+label_0=0
 label_1=0
 label_2=0
 label_3=0
@@ -127,58 +125,54 @@ label_6=0
 label_7=0
 label_8=0
 
+for line in data_label:
+    if line[0]=='0':
+        label_0=label_0+1
+    if line[0]=='1':
+        label_1=label_1+1
+    if line[0]=='2':
+        label_2=label_2+1
+    if line[0]=='3':
+        label_3=label_3+1
+    if line[0]=='4':
+        label_4=label_4+1
+    if line[0]=='5':
+        label_5=label_5+1
+    if line[0]=='6':
+        label_6=label_6+1
+    if line[0]=='7':
+        label_7=label_7+1
+    if line[0]=='8':
+        label_8=label_8+1
 
-
-for line in data:
-    row=line[:-2]
-    line=row.split(" ")
-    if labels[count]!='0':
-        ratio_1=label_1/total
-        ratio_2=label_2/total
-        ratio_3=label_3/total
-        ratio_4=label_4/total
-        ratio_5=label_5/total
-        ratio_6=label_6/total
-        ratio_7=label_7/total
-        ratio_8=label_8/total
-        if labels[count]=='1' and ratio_1<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_1=label_1+1
-        if labels[count]=='2' and ratio_2<0.2:
-            data_with_label.write(line[0]+' '+[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_2=label_2+1
-        if labels[count]=='3' and ratio_3<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_3=label_3+1
-        if labels[count]=='4' and ratio_4<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_4=label_4+1
-        if labels[count]=='5' and ratio_5<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_5=label_5+1
-        if labels[count]=='6' and ratio_6<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_6=label_6+1
-        if labels[count]=='7' and ratio_7<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_7=label_7+1
-        if labels[count]=='8' and ratio_8<0.2:
-            data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
-            data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-            label_8=label_8+1
-
-    total=label_1+label_2+label_3+label_4+label_5+label_6+label_7+label_8
-    count=count+1
-
-
-data.close()
 data_label.close()
-data_with_label_20percent.close()
-data_6d_20percent.close()
+total=label_0+label_1+label_2+label_3+label_4+label_5+label_6+label_7+label_8
+print(
+label_0,
+label_1,
+label_2,
+label_3,
+label_4,
+label_5,
+label_6,
+label_7,
+label_8,
+total)
+
+
+x=['0','1','2','3','4','5','6','7','8','total']
+y=[label_0, label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8,total]
+#plt.hist(x,bins=1,range=(0, 9))
+plt.bar(x, y, align="center", width=0.5, alpha=0.5)
+plt.show()
+
+
+ratio_0=label_0/total
+ratio_1=label_1/total
+ratio_2=label_2/total
+ratio_3=label_3/total
+ratio_4=label_4/total
+ratio_5=label_5/total
+ratio_6=label_6/total
+ratio_7=label_7/total
+ratio_8=label_8/total
