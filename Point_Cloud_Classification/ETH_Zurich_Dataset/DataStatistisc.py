@@ -160,11 +160,12 @@ label_8,
 total)
 
 
-x=['0','1','2','3','4','5','6','7','8','total']
+x=[0,1,2,3,4,5,6,7,8,total]
 y=[label_0, label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8,total]
 #plt.hist(x,bins=1,range=(0, 9))
 plt.bar(x, y, align="center", width=0.5, alpha=0.5)
 plt.show()
+#59109 130678360 318126 10874297 80220830 26847269 8225521 1143537 353899 258720948
 
 
 ratio_0=label_0/total
@@ -176,3 +177,7 @@ ratio_5=label_5/total
 ratio_6=label_6/total
 ratio_7=label_7/total
 ratio_8=label_8/total
+
+#0.00022846623150128532 0.5050938511558021 0.0012296105222991066 0.04203098776524273 0.3100670070210163 0.10376921237935477 0.031793022805405 0.0044199629324178265 0.001367879186960926
+
+print(ratio_0,ratio_1,ratio_2,ratio_3,ratio_4,ratio_5,ratio_6,ratio_7,ratio_8)

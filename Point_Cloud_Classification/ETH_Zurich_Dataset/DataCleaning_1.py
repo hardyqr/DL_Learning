@@ -22,19 +22,19 @@ data_with_label_20percent=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich
 data_6d_20percent=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station5_xyz_rgb_20percent.txt','w')
 '''
 #domfountain_station1
-
+'''
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/domfountain_station1_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/domfountain_station1_xyz_intensity_rgb.txt', 'r')
 data_with_label_20percent=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_intensity_rgb_label_20percent.txt','w')
 data_6d_20percent=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_rgb_20percent.txt','w')
-
-#domfountain_station2
 '''
+#domfountain_station2
+
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/domfountain_station2_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/domfountain_station2_xyz_intensity_rgb.txt', 'r')
 data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station2_xyz_intensity_rgb_label.txt','w')
 data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station2_xyz_rgb.txt','w')
-'''
+
 #domfountain_station3
 '''
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/domfountain_station3_xyz_intensity_rgb.labels','r')

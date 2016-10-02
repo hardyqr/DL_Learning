@@ -1,32 +1,32 @@
 
 #bildstein_station1
-
+'''
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/bildstein_station1_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/bildstein_station1_xyz_intensity_rgb.txt', 'r')
-data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station1_xyz_intensity_rgb_label_20percent.txt','w')
-data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station1_xyz_rgb_20percent.txt','w')
+data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station1_xyz_intensity_rgb_label.txt','w')
+data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station1_xyz_rgb.txt','w')
 
-
+'''
 #bildstein_station3
 '''
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/bildstein_station3_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/bildstein_station3_xyz_intensity_rgb.txt', 'r')
-data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station3_xyz_intensity_rgb_label_20percent.txt','w')
-data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station3_xyz_rgb_20percent.txt','w')
+data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station3_xyz_intensity_rgb_label.txt','w')
+data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station3_xyz_rgb.txt','w')
 '''
 #bildstein_station5
-'''
+
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/bildstein_station5_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/bildstein_station5_xyz_intensity_rgb.txt', 'r')
-data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station5_xyz_intensity_rgb_label_20percent.txt','w')
-data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station5_xyz_rgb_20percent.txt','w')
-'''
+data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station5_xyz_intensity_rgb_label.txt','w')
+data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/bildstein_station5_xyz_rgb.txt','w')
+
 #domfountain_station1
 '''
 data_label= open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Ground Truth/sem8_labels_training/domfountain_station1_xyz_intensity_rgb.labels','r')
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training Data/domfountain_station1_xyz_intensity_rgb.txt', 'r')
-data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_intensity_rgb_label_20percent.txt','w')
-data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_rgb_20percent.txt','w')
+data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_intensity_rgb_label.txt','w')
+data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/domfountain_station1_xyz_rgb.txt','w')
 '''
 #domfountain_station2
 '''
@@ -112,6 +112,8 @@ data_with_label=open('//Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/s
 data_6d=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/untermaederbrunnen_station3_xyz_rgb.txt','w')
 '''
 
+import numpy
+import random
 
 labels=[]
 for line in data_label:
@@ -144,14 +146,14 @@ for line in data:
     line=row.split(" ")
 
     if labels[count] != '0':
-        ratio_1=float(label_1)/float(total)
-        ratio_2=float(label_2)/float(total)
-        ratio_3=float(label_3)/float(total)
-        ratio_4=float(label_4)/float(total)
-        ratio_5=float(label_5)/float(total)
-        ratio_6=float(label_6)/float(total)
-        ratio_7=float(label_7)/float(total)
-        ratio_8=float(label_8)/float(total)
+        ratio_1=float(label_1)/total
+        ratio_2=float(label_2)/total
+        ratio_3=float(label_3)/total
+        ratio_4=float(label_4)/total
+        ratio_5=float(label_5)/total
+        ratio_6=float(label_6)/total
+        ratio_7=float(label_7)/total
+        ratio_8=float(label_8)/total
 
         if labels[count]=='1':
             label_1=label_1+1
@@ -182,50 +184,76 @@ for line in data:
 
 print(label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8)
 #normalization
-ratio_all=1/ratio_1+1/ratio_2+1/ratio_3+1/ratio_4+1/ratio_5+1/ratio_6+1/ratio_7+1/ratio_8
-p_1=1/ratio_1/ratio_all
-p_2=1/ratio_2/ratio_all
-p_3=1/ratio_3/ratio_all
-p_4=1/ratio_4/ratio_all
-p_5=1/ratio_5/ratio_all
-p_6=1/ratio_6/ratio_all
-p_7=1/ratio_7/ratio_all
-p_8=1/ratio_8/ratio_all
+#ratio_all=1/ratio_1+1/ratio_2+1/ratio_3+1/ratio_4+1/ratio_5+1/ratio_6+1/ratio_7+1/ratio_8
+
+p_1=1-ratio_1
+p_2=1-ratio_2
+p_3=1-ratio_3
+p_4=1-ratio_4
+p_5=1-ratio_5
+p_6=1-ratio_6
+p_7=1-ratio_7
+p_8=1-ratio_8
 print(p_1,p_2,p_3,p_4,p_5,p_6,p_7,p_8)
 
-for line in data:
 
+
+count=0
+
+count_1=0
+count_2=0
+count_3=0
+count_4=0
+count_5=0
+count_6=0
+count_7=0
+count_8=0
+count_total=1
+
+for line in data:
     row=line[:-2]
     line=row.split(" ")
-
     if labels[count] != '0':
-        if labels[count]=='1' and p_1>random.random():
+        if labels[count]=='1' and random.random()<p_1:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='2' and p_2>random.random():
+            count_1=count_1+1
+            print('1')
+        if labels[count]=='2' and random.random()<p_2:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='3' and p_3>random.random():
+            count_2=count_2+1
+        if labels[count]=='3' and random.random()<p_3:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='4' and p_4>random.random():
+            count_3+=1
+        if labels[count]=='4' and random.random()<p_4:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='5' and p_5>random.random():
+            count_4+=1
+        if labels[count]=='5' and random.random()<p_5:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='6' and p_6>random.random():
+            count_5+=1
+        if labels[count]=='6' and random.random()<p_6:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='7' and p_7>random.random():
+            count_6+=1
+        if labels[count]=='7' and random.random()<p_7:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
-        if labels[count]=='8' and p_8>random.random():
+            count_7+=1
+        if labels[count]=='8' and random.random()<p_8:
             data_with_label.write(line[0]+' '+line[1]+' '+line[2]+' '+line[3]+' '+line[4]+' '+line[5]+' '+line[6]+' '+labels[count]+'\n')
             data_6d.write(line[0]+' '+line[1]+' '+line[2]+' '+line[4]+' '+line[5]+' '+line[6]+'\n')
+            count_8+=1
 
+    count=count+1
 
 data.close()
 data_label.close()
 data_with_label.close()
 data_6d.close()
+count_total=count_1+count_2+count_3+count_4+count_5+count_6+count_7+count_8
+
+print(float(count_1)/count_total,float(count_2)/count_total,float(count_3)/count_total,float(count_4)/count_total,float(count_5)/count_total,float(count_6)/count_total,float(count_7)/count_total,float(count_8)/count_total)
