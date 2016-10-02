@@ -109,8 +109,8 @@ number_of_layers=8
 
 lstm = tf.nn.rnn_cell.BasicLSTMCell(n_hidden, forget_bias=1.0,state_is_tuple=True)
 stacked_lstm = tf.nn.rnn_cell.MultiRNNCell([lstm] * number_of_layers,state_is_tuple=True)
-initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
-
+#initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
+initial_state = state = np.zeros((batch_size, 2*n_hidden))
 
 
 def Network(_x,_state):
@@ -138,7 +138,8 @@ while step * batch_size < training_iters:
         # 每次处理一批词语后更新状态值.
         # LSTM 输出可用于产生下一个词语的预测
 
-        sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys})
+        sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys,
+                                        istate:initial_state})
         print(loss)
 
         step += 1
