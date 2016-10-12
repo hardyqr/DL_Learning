@@ -7,6 +7,8 @@
 
 
 ## Method:
+![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/WechatIMG3.jpeg)
+
 
 ### 1.第一部分网络
 特征提取网络：
