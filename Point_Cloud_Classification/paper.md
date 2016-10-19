@@ -1,7 +1,14 @@
-# 基于Residual RNN的点云特征提取与分类自动化处理框架
+# 基于Residual RNN和CNN的点云特征提取与分类自动化处理框架
+A Deep Learning Framework for PointCloud Understanding
+Part 1: Residual RNN; Classification
+Part 2: 3D CNN; Object Detection
+
+todo:
+1. 测试ETH Zurich数据集
+2. CNN试验
 
 ## Abstract:
-用传统方法对semantic features进行模板化、公式化的提取特征，虽然可以有效得到结构信息，但其过程对于原始数据信息有一定的损失，且使用范围存在局限性（如室内外场景的特征提取策略一般不同）,无法灵活应对不同场景、特点的数据。使用Residual RNN拟合从原始6维点云数据到分类结果的映射，任务过于复杂，在训练过程中，loss function难以快速而准确的向着最小值收敛，加之训练样本和训练时间的限制，削减了泛化能力强。除特征提取，传统的整合特征进行分类的手段如CFR、SVM等，也不能更好的适应不同场景间的变化。我们提出一种基于Residual RNN网络的，实现从LIDAR点云数据（x,y,z,r,g,b）输入，到指定类别分类结果的自动化处理框架。通过训练网络获得提取多种传统语义特征的能力，再利用RNN自动提取features来弥补前一步对原始数据信息造成的损失，最终利用synthesize network综合所有得到的特征信息，给出分类结果。
+用传统方法对semantic features进行模板化、公式化的提取特征，虽然可以有效得到结构信息，但其过程对于原始数据信息有一定的损失，且使用范围存在局限性（如室内外场景的特征提取策略一般不同）,无法灵活应对不同场景、特点的数据。使用Residual RNN拟合从原始6维点云数据到分类结果的映射，任务过于复杂，在训练过程中，loss function难以快速而准确的向着最小值收敛，加之训练样本和训练时间的限制，削减了泛化能力强。除特征提取，传统的整合特征进行分类的手段如CFR、SVM等，也不能更好的适应不同场景间的变化。我们提出一种基于Residual RNN网络的，实现从LIDAR点云数据（x,y,z,r,g,b）输入，到指定类别分类结果的自动化处理框架。通过训练网络获得提取多种传统语义特征的能力，再利用RNN自动提取features来弥补前一步对原始数据信息造成的损失，最终利用synthesize  
 
 ## Related Work:
 
@@ -17,6 +24,8 @@ a. 对网络进行预训练，使之在特定位置收敛得到几个空间结�
 b. 一个过深的网络存在degradation(梯度耗散)的问题，网络深度增加performance会不升反降。在点云分类问题中，一个很deep的网络是必要的，但过深网络很快导致a higher training error, Kaiming He 将其称为degradation(梯度消失)(Deep Residual Learning for Image Recognition, Kaiming He)。我们在前期实验中也在点云数据上验证了这一点。Kaiming He提出的Deep Residual Network很好地解决了degradation的问题。本文借鉴了他的思想，在神经元间进行了搭接,使用了一些Residual Block的结构。
 
 c. 我们在Deep Residual RNN网络中使用LSTM神经元，使网络获得长期记忆的能力，在输入一个较长的点序列后，依然可以记忆靠前的输入，达到对物体空间结构进行理解的目的。
+
+d. 不同的识别对象可能有不同的空间结构、颜色特点，为了尽快得到有效特征，需要在学习速度和特征有效性（也即识别精度）间寻找到一个平衡。因此我们对于不同识别对象，应用了不同深度的特征提取网络，以期在有效提取特征的同时加速网络收敛。
 
 ### Network
 我们提出一种基于深度RNN的,具有Residual block的,以LSTM作为神经元的自动化处理框架, 希望可以有效解决应用在点云分类问题上的"过深"的网络存在的degradation,训练时间长、收敛慢的问题, 高效提取空间信息特征，且能够把高阶、低阶特征进行融合、提炼，获得最佳分类参数,提高分类准确度。
