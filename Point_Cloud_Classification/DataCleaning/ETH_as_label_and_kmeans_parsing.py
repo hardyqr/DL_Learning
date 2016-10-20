@@ -1,7 +1,6 @@
-import scipy.io as sio
 
 
-output_office_data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/bildstein_station1/bildstein_station1_label8.txt','r')
+output_office_data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/bildstein_station3/bildstein_station3_label8.txt','r')
 '''
 label_0=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/neugasse_station1/neugasse_station1_label0.txt','w')
 label_1=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/neugasse_station1/neugasse_station1_label1.txt','w')
@@ -28,10 +27,11 @@ label_8=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8
 '''
 import csv
 
-mid_file = open('/Users/Fangyu/Desktop/mid_data.csv', 'w')
+#mid_file = open('/Users/Fangyu/Desktop/mid_data.csv', 'w')
 
-
-
+xs=[]
+ys=[]
+zs=[]
 data=[]
 for line in output_office_data:
     this=[]
@@ -43,7 +43,11 @@ for line in output_office_data:
     #mid_file.write(x+','+y+'\n')
     this.append(float(x))
     this.append(float(y))
+    xs.append(float(x))
+    ys.append(float(y))
+    zs.append(float(z))
     data.append(this)
+
 #mid_file.close()
 
 print(data)
@@ -60,7 +64,7 @@ clf = KMeans(n_clusters=3) 表示类簇数为3，聚成3类数据，clf即赋值
 y_pred = clf.fit_predict(X) 载入数据集X，并且将聚类的结果赋值给y_pred
 '''
 
-clf = KMeans(n_clusters=4)
+clf = KMeans(n_clusters=10)
 y_pred = clf.fit_predict(data)
 
 #输出完整Kmeans函数，包括很多省略参数
@@ -73,10 +77,15 @@ print(y_pred)
 Visualization
 '''
 import matplotlib.pyplot as plt
-plt.scatter(x, y, c=y_pred, marker='x')
-plt.title("Kmeans-Basketball Data")
-plt.xlabel("x")
-plt.ylabel("y")
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(xs,ys,zs,c=y_pred, marker='x')
+plt.title("Kmeans Data")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_ylabel("z")
 plt.show()
 
 '''
