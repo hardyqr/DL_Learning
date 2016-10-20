@@ -22,22 +22,27 @@ Shape Completion Enabled Robotic Grasping
 我们提出一种基于深度RNN和CNN的,具有Residual block的,以LSTM作为神经元的自动化处理框架, 希望可以有效解决过去在点云分类问题上方法的泛化能力差、精度低的问题，同时兼顾到"过深"的网络存在的degradation,训练时间长、收敛慢的问题。我们提出的framework可以自动高效提取多个尺度上的空间特征、颜色特征信息，且能够把高阶、低阶特征进行融合、提炼，获得最佳分类参数,提高分类准确度。
 
 
-我们的自动化处理框架如下：
+我们的自动化处理框架如下：  
+
+
 ![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/Pic_1_Network_Overview.jpg)
 #### Part 1 （Network_1）
-特征提取网络：
-Residual RNN提取Intensity和颜色特征+3D CNN提取多尺度空间结构特征
-特征提取网络对每个输入点实现从六维（x,y,z,r,g,b）/七维（x,y,z,Intensity,r,g,b）数据输入到N维特征向量的映射。
+特征提取网络：  
 
-1.由Multi-scale 3D CNN提取多个尺度的空间结构特征并标记回每个individual的点；
-先把原始点云数据栅格化成3D Voxel Grid
+Residual RNN提取点云序列特征+3D CNN提取多尺度特征  
+
+特征提取网络对每个输入点实现从六维（x,y,z,r,g,b）/七维（x,y,z,Intensity,r,g,b）数据输入到N维特征向量的映射。  
+
+1. 由Multi-scale 3D CNN提取多个尺度的空间结构特征并标记回每个individual的点；
+先把原始点云数据栅格化成3D Voxel Grid  
 ![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/PointcloudtoVoxelgrid.jpeg)
-输入如下的CNN网络
+输入如下的CNN网络  
 ![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/3DCNN.png)
 （大概是图里这个意思,但我们的有多个尺度的卷积，具体参数也会变）
 
 
-2.由Residual RNN提取Intensity和颜色的特征
+2. 点云以六维/七维向量的形式直接输入，由Residual RNN提取抽象的点云特征
+
 
 
 最后,将两部分特征串联（concatenate）结合得到第二部分网络的输入。
