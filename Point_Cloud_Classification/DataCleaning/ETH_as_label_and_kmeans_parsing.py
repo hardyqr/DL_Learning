@@ -1,6 +1,6 @@
 
 
-output_office_data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/bildstein_station3/bildstein_station3_label8.txt','r')
+output_office_data=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/bildstein_station1/bildstein_station1_label8.txt','r')
 '''
 label_0=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/neugasse_station1/neugasse_station1_label0.txt','w')
 label_1=open('/Volumes/Liu\'s TOSHIBA EXT/database/ETH_Zurich_Dataset/semantic-8/Training_Cleaned/XYZ_Intensity_RGB_Label/neugasse_station1/neugasse_station1_label1.txt','w')
@@ -64,7 +64,7 @@ clf = KMeans(n_clusters=3) 表示类簇数为3，聚成3类数据，clf即赋值
 y_pred = clf.fit_predict(X) 载入数据集X，并且将聚类的结果赋值给y_pred
 '''
 
-clf = KMeans(n_clusters=10)
+clf = KMeans(n_clusters=2)
 y_pred = clf.fit_predict(data)
 
 #输出完整Kmeans函数，包括很多省略参数

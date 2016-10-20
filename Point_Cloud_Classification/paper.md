@@ -46,9 +46,9 @@ Residual RNN提取点云序列特征+3D CNN提取多尺度特征
 
 
 最后,将两部分特征串联（concatenate）结合得到第二部分网络的输入。
-![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/Feature_Reconstruction.png)
+![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/Feature_reconstruction%202.png)
 
-input=x,y,z,i,r,g,b
+input=[x,y,z,i,r,g,b]
 
 Output_1=[CNN_feature_1(input), CNN_feature_2(input), ... ,CNN_feature_n(input), RNN_feature_1(input),RNN_feature_2(input), ..., RNN_feature_n(input)]
 
