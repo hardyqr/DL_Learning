@@ -23,7 +23,7 @@ Shape Completion Enabled Robotic Grasping
 
 
 我们的自动化处理框架如下：
-![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/3DCNN%2BResidualRNN.jpeg)
+![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/Pic_1_Network_Overview.jpg)
 #### Part 1 （Network_1）
 特征提取网络：
 Residual RNN提取Intensity和颜色特征+3D CNN提取多尺度空间结构特征
