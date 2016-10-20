@@ -14,7 +14,7 @@ Shape Completion Enabled Robotic Grasping
 
 
 ### Network Overview
-我们提出一种基于深度RNN和CNN的,具有Residual block的,以LSTM作为神经元的自动化处理框架, 希望可以有效解决应用在点云分类问题上的"过深"的网络存在的degradation,训练时间长、收敛慢的问题, 高效提取多个尺度上的空间特征信息，且能够把高阶、低阶特征进行融合、提炼，获得最佳分类参数,提高分类准确度。
+我们提出一种基于深度RNN和CNN的,具有Residual block的,以LSTM作为神经元的自动化处理框架, 希望可以有效解决过去在点云分类问题上方法的泛化能力差、精度低的问题，同时兼顾到"过深"的网络存在的degradation,训练时间长、收敛慢的问题。我们提出的framework可以自动高效提取多个尺度上的空间特征、颜色特征信息，且能够把高阶、低阶特征进行融合、提炼，获得最佳分类参数,提高分类准确度。
 
 我们的自动化处理框架如下：
 ![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/3DCNN%2BResidualRNN.jpeg)
