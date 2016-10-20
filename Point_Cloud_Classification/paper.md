@@ -30,7 +30,7 @@ e.为了使我们的自动化处理框架可以识别多角度，朝向（orient
 我们提出一种基于深度RNN和CNN的,具有Residual block的,以LSTM作为神经元的自动化处理框架, 希望可以有效解决应用在点云分类问题上的"过深"的网络存在的degradation,训练时间长、收敛慢的问题, 高效提取多个尺度上的空间特征信息，且能够把高阶、低阶特征进行融合、提炼，获得最佳分类参数,提高分类准确度。
 
 我们的自动化处理框架如下：
-![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/Point_Cloud_Classification/3DCNN+ResidualRNN.jpeg)
+![Network](https://github.com/hardyqr/Learning_Notes_of_DL_Models/blob/master/Point_Cloud_Classification/3DCNN%2BResidualRNN.jpeg)
 #### 第一部分网络
 特征提取网络：
 Residual RNN提取Intensity和颜色特征+3D CNN提取多尺度空间结构特征
