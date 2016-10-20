@@ -52,6 +52,9 @@ Result = Output_2 = synthesize(output_1)
 ###
 #### Multi-Scale 3D CNN
 传统点云数据呈无序的离散分布，无法使用诸如CNN的深度学习工具进行特征提取，我们将其栅格化，转化为3D Voxel Grid(O除叛采样Grids),使之具有可以输入CNN的数据格式。CNN应用于图像数据时，体现了对画面结构的良好理解，提取有效特征的强大能力，我们认为映射到三维场景，CNN仍具有相似的特点。但large-scale三维场景不同于图片之处在于，识别对象在空间中的大小存在千差万别的不同，不同种类对象的结构特征可能体现在不同的尺度上。于是我们设计了多个尺度上的卷积核，希望能够学习到multi-scale的物体空间特征，并通过监督学习得到最为有效的representation。
+
+过去的工作通常采取先将点云数据栅格化，再用CNN网络进行3D卷积直接得到了栅格化后点阵的分类结果。如此只能得到整个点集（点阵）的标签，无法应用于large-scale点云的分类，且无法避免栅格化时信息损失的问题。我们不把3D CNN的卷积特征直接用于分类，而是再多尺度卷积后将其拼接进由Residual RNN提取的另一个特征向量中，不仅可以应用于大场景、细化到每个individual点的分类，还有效弥补了栅格化造成的信息损失。
+
 #### Multi-Orientation Learning
 为了使我们的自动化处理框架可以识别多角度，朝向（orientation）的物体，我们对3D CNN在训练时采取“旋转输入”的方式。eg.一把椅子分20个角度（相当于20把朝向不同的椅子）输入网络，使Framework在面对不同空间形态的物体时有较好的泛化能力。
 
@@ -62,8 +65,9 @@ Result = Output_2 = synthesize(output_1)
 我们在Deep Residual RNN网络中使用LSTM神经元，避免Gradient Vanishing,使网络获得长期记忆的能力，在输入一个较长的点序列后，网络有理解前后点联系间关联的能力，使之在参数发生突变时，意识到输入点的类型可能发生了改变。
 
 #### Deep Neural Network Classifier
+*[?]为什么deep learning在本问题上优于SVM*
 https://www.quora.com/What-are-the-advantages-of-different-classification-algorithms  
-多个尺度的空间特征和Intensity、颜色特征在第二部分网络中竞争，并由网络筛选、融合、提取出合适的高层次特征，再由网络最终给出分类。由于特征信息来自于不同类型、不同尺度的识别对象，因此要求在高维空间中作出多种分类，SVM难以一次性给出多分类，Decision-Tree有过拟合的问题。为了得到一个可以进行多分类、泛化能力强、适用于不同场景分类问题的分类器，我们选择了一个Deep Neural Network Classifier。
+多个尺度的空间特征和Intensity、颜色特征在第二部分网络中竞争，并由网络筛选、融合、提取出合适的高层次特征，再由网络最终给出分类。由于特征信息来自于不同类型、不同尺度的识别对象，因此要求在高维空间中作出多种分类；且为了得到有效的特征，classifier本身需要有向特征提取网络回传参数的能力，进而才能对特征提取网络作出优化。为了得到一个可以整合进特征提取网络、可多分类、泛化能力强、适用于不同场景分类问题的分类器，我们选择了一个Deep Neural Network Classifier。
 
 #### Synthesize Semantic features(representations)
 对网络进行预训练，使之在特定位置收敛得到几个空间结构的显著特征，如法向量、spin图，可以有效缩短训练时间。(可看效果考虑加不加)
@@ -73,10 +77,10 @@ https://www.quora.com/What-are-the-advantages-of-different-classification-algori
 
 1.Stanford indoor dataset (12 classes)
 
-实验中，我们将第一部分网络去掉提取传统特征的部分，仅使用Residual RNN自动提取网络特征,发现最终效果与我们提出的网络相近，但收敛明显更慢。
+纯RNN泛化能力较差，训练慢，精度欠佳。
 
 
-2.German 某数据 (8 classes)
+2.ETH Zurich数据 (8 classes)
 
 3.Tianjin 遥感数据 (4 classes)
 
