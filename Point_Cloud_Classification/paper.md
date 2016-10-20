@@ -54,7 +54,7 @@ Output_1=[CNN_feature_1(input), CNN_feature_2(input), ... ,CNN_feature_n(input),
 Result = Output_2 = synthesize(output_1)
 
 
-###
+### Details About Our Framework
 #### Multi-Scale 3D CNN and Featured Vector Reconstruction
 
 传统的点云分类主要使用两种方法：人工提取semantic features（eg. spin图、法向量等）后送进分类器得到分类结果; 点云数据栅格化后放入3D CNN提取特征获得分类。
