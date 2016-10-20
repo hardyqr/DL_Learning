@@ -1,8 +1,8 @@
 # A Deep Learning Framework for PointCloud Understanding - 基于Residual RNN和3D CNN的点云特征提取与分类自动化处理框架
 
-1. 3D 卷积在large-scale scene的首次应用
-2. 解决过去需要人工提取sematic特征的问题(信息损失\representation不足够有效)
-3.
+1. 解决3D CNN只能用于单一属性的点集, 3D 卷积在large-scale scene的首次应用
+2. 解决过去需要人工提取sematic特征的问题(信息损失、representation不足够有效)
+3. 全自动框架，任意大小、形式点云输入
 
 ## Abstract:
 用传统方法对semantic features进行模板化、公式化的提取特征，虽然可以有效得到结构信息，但其过程对于原始数据信息有一定的损失，且使用范围存在局限性（如室内外场景的特征提取策略一般不同）,无法灵活应对不同场景、特点的数据。除特征提取，传统的整合特征进行分类的手段如CFR、SVM等，也不能更好的适应不同场景间的变化，泛化能力有限。我们提出一种基于Residual RNN和3D CNN的自动化framework，得到从原始LIDAR点云数据（6维/7维输入）映射到指定类别分类结果的自动化处理框架，通过监督训练使网络获得提取多尺度、空间和Intensity、颜色信息的抽象特征的能力,达到了对large-scale scene点云分类state-of-art的效果。  
