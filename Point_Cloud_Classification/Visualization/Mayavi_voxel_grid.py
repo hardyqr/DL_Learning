@@ -1,7 +1,6 @@
+import numpy as np
+#from mayavi import mlab
 '''
-mport numpy as np
-from mayavi import mlab
-
 
 data = (100, 100, 100)
 data = np.zeros(data)
@@ -15,6 +14,7 @@ mlab.show()
 
 
 '''
+
 import mayavi.mlab
 import numpy
 
@@ -31,4 +31,12 @@ mayavi.mlab.points3d(xx, yy, zz,
                      color=(0, 1, 0),
                      scale_factor=1)
 
-mayavi.mlab.show()
+
+'''
+mlab.clf()
+x, y, z = np.mgrid[-5:5:64j, -5:5:64j, -5:5:64j]
+values = x*x*0.5 + y*y + z*z*2.0
+
+mlab.contour3d(values)
+
+'''
