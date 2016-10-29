@@ -1,26 +1,36 @@
 import numpy as np
 import os
-all_scenes=os.listdir('C:\Users\\team383\Desktop\office_data_ply\office_data_ply')
-
+all_scenes=os.listdir('/Volumes/Liu\'s TOSHIBA EXT/database/Cornell Robotics Learning Lab Dataset/home_data_ply')
+labels=[]
 for scene in all_scenes:
     print(scene)
-    input_data='C:\Users\\team383\Desktop\office_data_ply\office_data_ply\\'+scene
+    input_data='/Volumes/Liu\'s TOSHIBA EXT/database/Cornell Robotics Learning Lab Dataset/home_data_ply/'+scene
+    #data=open(input_data)
     P = np.loadtxt(input_data, delimiter=' ', skiprows=15, unpack=True)
-    IX=P[0,:]
-    IY=P[1,:]
-    IZ=P[2,:]
-    IR=P[3,:]
-    IG=P[4,:]
-    IB=P[5,:]
-    Icamera_index=P[6,:]
-    Idistance=[7,:]
-    Isegment=[8,:]
-    Ilabel=[9:]
+    #IX=P[0,:]
+    #IY=P[1,:]
+    #IZ=P[2,:]
+    #IR=P[3,:]
+    #IG=P[4,:]
+    #IB=P[5,:]
+    #Icamera_index=P[6,:]
+    #Idistance=P[7,:]
+    #Isegment=P[8,:]
+    Ilabel=P[9:]
     #xs=[x*45 for x in range(8)]
-    print(P)
+    print(Ilabel)
+    for label in Ilabel:
+        Ilabel=label
+    for item in Ilabel:
+        if item in labels:
+            print('pass')
+        else:
+            print(item)
+            labels.append(item)
+    print(labels)
 '''
     output_data=[]
-    for x in xs:
+    for i in (1,33):
         output_data.append('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/labelled/Area_1/rotations/'+'room_'+str(i)+'_'+str(x)+'.txt')
     def rotation(x,y,n):
         X=x*np.cos(n)+y*np.sin(n)
