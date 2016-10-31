@@ -1,16 +1,16 @@
-'''
+
 import os
 count=1
 Area_1=os.listdir('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/original_data/Aligned_Version_v1.1-4/Aligned_Version/Area_1')
 
 for room in Area_1:
-    if room[0:3] != 'Ico'  and room != '.DS_Store':
+    if 'Ico' not in room and '.DS_Store' not in room:
         names=os.listdir('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/original_data/Aligned_Version_v1.1-4/Aligned_Version/Area_1/'+room+'/Annotations')
-        out=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/labelled/room_'+str(count)+'.txt','w')
-            #out_test=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/labelled/office_1_window.txt','w')
-
+        out=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/original_data/Aligned_Version_v1.1-4/Aligned_Version/Area_1/'+room+'/'+room+'_labelled.txt','w')
+        #print('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/original_data/Aligned_Version_v1.1-4/Aligned_Version/Area_1/'+room+'/'+room+'_labelled.txt')
+        #out_test=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/labelled/office_1_window.txt','w')
         for name in names:
-            if name[0:3] !='Ico' and name != '.DS_Store':
+            if 'Ico' not in name and '.DS_Store' not in name:
                 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/original_data/Aligned_Version_v1.1-4/Aligned_Version/Area_1/'+room+'/Annotations/'+name,'r')
                 if name[0:3]=='clu':
                     label=0
@@ -40,8 +40,9 @@ for room in Area_1:
                     out.write(line[:-1]+' '+str(label)+'\n')
                 data.close()
         out.close()
+        print(room)
         count=count+1
-'''
+
 '''
             clutter:0
             beam:1
@@ -55,6 +56,8 @@ for room in Area_1:
             table:9
             wall:10
             window:11
+'''
+
 '''
 #输出数据检验
 data=open('/Volumes/Liu\'s TOSHIBA EXT/database/Stanford_Indoor_Semantic_Parsing/labelled/room_22.txt','r')
@@ -110,3 +113,4 @@ for line in data:
 
     if row[6]=='11\n':
         window.write(line)
+'''
