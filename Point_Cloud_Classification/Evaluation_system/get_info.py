@@ -32,11 +32,8 @@ def get_info_with_data(data):
     #IR=data[3,:]
     #IG=data[4,:]
     #IB=data[5,:]
-<<<<<<< Updated upstream
-    IL=data[:,6]
-=======
+    #IL=data[:,6]
     #=data[:,6]
->>>>>>> Stashed changes
     #print(IL)
     #IL_list=list(IL)
     #table_num=IL_list.count('9')
