@@ -33,7 +33,6 @@ def get_info_with_data(data):
     #IG=data[4,:]
     #IB=data[5,:]
     #IL=data[:,6]
-    #=data[:,6]
     #print(IL)
     #IL_list=list(IL)
     #table_num=IL_list.count('9')
