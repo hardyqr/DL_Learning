@@ -18,3 +18,12 @@
 所以你去了解一下广义线性模型，他推导出来就是这个样子的。
 
 [Softmax回归](http://ufldl.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92)
+
+
+
+[Neural Networks, Manifolds, and Topology](http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/)
+
+Manifold n.流形
+
+classification with a `sigmoid` unit or a `softmax` layer is equivalent to trying to find a hyperplane (or in this case a line) that separates A
+ and B in the final represenation.
