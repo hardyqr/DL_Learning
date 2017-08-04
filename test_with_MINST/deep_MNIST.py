@@ -4,6 +4,7 @@ import tensorflow as tf
 '''parameters'''
 bathc_size = 50
 iteration = 20000
+learning_rate = 1e-4
 
 '''import data'''
 from tensorflow.examples.tutorials.mnist import input_data
@@ -48,6 +49,11 @@ b_conv1 = bias_variable([32])
 
 
 x_image = tf.reshape(x, [-1,28,28,1])
+# tf.reshape
+# If one component of shape is the special value -1, 
+# the size of that dimension is computed so that the total 
+# size remains constant.
+
 # the second and third dimensions corresponding to image 
 # width and height, and the final dimension corresponding 
 # to the number of color channels.
