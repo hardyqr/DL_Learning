@@ -9,12 +9,12 @@ def pixel_locator(p, n, f ):
     p: point cloud, n: center of photo, f: focal point
     return location of the point cloud on the photo
     '''
-	point_num = len(p)
-	original_p = p
-	p = tf.Variable(p[:,0:3], tf.float32)
-	n = tf.Variable(n*point_num, tf.float32)
-	f = tf.Variable(f*point_num, tf.float32)
-	v = tf.subtract(f, n) # normal vector of the photo
+    point_num = len(p)
+    original_p = p
+    p = tf.Variable(p[:,0:3], tf.float32)
+    n = tf.Variable(n*point_num, tf.float32)
+    f = tf.Variable(f*point_num, tf.float32)
+    v = tf.subtract(f, n) # normal vector of the photo
     lv = tf.subtract(f, p) # line vector
     
     vpt = tf.multiply(v, lv)
