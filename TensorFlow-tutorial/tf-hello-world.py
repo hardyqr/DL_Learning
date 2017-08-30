@@ -55,8 +55,46 @@ train_Y = np.array([1.7,2.76,2.09,3.19,1.694,1.573,3.366,2.596,2.53,1.221,2.827,
 # Inputs
 X = tf.placeholder(tf.float32)
 Y = tf.placeholder(tf.float32)
+n_samples = train_X.shape[0]
 
 # model weights
-W = tf.Variable()
-b = tf.Variable()
+W = tf.Variable(np.random.randn(), name = "weight")
+b = tf.Variable(np.random.randn(), name = "bias")
+
+
+activation = tf.add(tf.multiply(W,X),b)
+
+
+cost = tf.reduce_sum(tf.pow(activation - Y,2)/(2*int(n_samples)))
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
+
+
+init = tf.initialize_all_variables()
+
+
+with tf.Session() as sess:
+    sess.run(init)
+
+    for epoch in range(training_epochs):
+        for (x,y) in zip(train_X,train_Y):
+            sess.run(optimizer, feed_dict = {X:x, Y:y})
+
+            # display logs per epoch step
+            if(epoch % display_step == 0):
+                print("Epoch: %i" % (epoch + 1), "cost=",\
+                        "{:.9f}".format(sess.run(cost, feed_dict={X:train_X, Y:train_Y})))#???
+                print("W=", sess.run(W),"b=",sess.run(b))
+
+    print("done!")
+    print("Epoch: %i" % (epoch + 1), "cost=",\
+            "{:.9f}".format(sess.run(cost, feed_dict={X:train_X, Y:train_Y})))#???
+    print("W=", sess.run(W),"b=",sess.run(b))
+
+    # graphical display
+    plt.plot(train_X, train_Y, 'ro', label = "original data")
+    plt.plot(train_X, sess.run(W)*train_X + sess.run(b), label = "fitted line")
+    plt.legend()
+    plt.show()
+
+
 
