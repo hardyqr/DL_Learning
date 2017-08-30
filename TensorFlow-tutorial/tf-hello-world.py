@@ -159,15 +159,12 @@ with tf.Session() as sess:
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print("Accuracy:", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
 '''
+
 '''MNIST for expert'''
 
 # import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-
-learning_rate = 1e-4
-batch_size = 50
-iterations = 40000
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev = 0.1)
@@ -185,10 +182,10 @@ def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize = [1,2,2,1], strides = [1,2,2,1], padding = 'SAME')
 
 # parameters
-learning_rate = 0.01
-training_epochs = 100
-batch_size = 50
-display_step = 1
+learning_rate = 1e-4
+iterations = 40000
+batch_size = 100
+
 
 # tf Graph Input
 x = tf.placeholder(tf.float32, [None, 784]) # mnist data image of shape 28*28=784
@@ -198,18 +195,24 @@ x_image = tf.reshape(x,[-1, 28,28,1])
 
 
 # first convolutional layer
-W_conv1 = weight_variable([5, 5, 1 ,32])
+W_conv1 = weight_variable([6, 6, 1 ,32])
 b_conv1 = bias_variable([32])
 
 h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1)+b_conv1)# 28 x 28
 h_pool1 = max_pool_2x2(h_conv1)# 14 x 14
 
 # second convolutional layer 
-W_conv2 = weight_variable([5,5,32,64])
+W_conv2 = weight_variable([6,6,32,64])
 b_conv2 = bias_variable([64])
 
 h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2)+b_conv2) # 14 x 14
 h_pool2 = max_pool_2x2(h_conv2) # 7 x 7
+
+# third convolutional layer 
+W_conv3 = weight_variable([4,4,64,64])
+b_conv3 = bias_variable([64])
+
+h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3)+b_conv3) # 7 x 7
 
 # densely connected layer
 W_fc1 = weight_variable([7*7*64, 1024])
@@ -239,8 +242,8 @@ with tf.Session() as sess:
         batch = mnist.train.next_batch(batch_size)
         if i%100 == 0 :
             train_accuracy = accuracy.eval(feed_dict={x:batch[0], y:batch[1], keep_prob: 1.0})
-            print('step %d, training accuracy %g' % (i, train_accuracy))
+            print('step %d, training accuracy %.4f' % (i, train_accuracy))
         train_step.run(feed_dict = {x:batch[0], y:batch[1], keep_prob: 0.5})
 
-    print('test accuracy %g' % accuracy.eval(feed_dict={
+    print('test accuracy %.4f' % accuracy.eval(feed_dict={
       x: mnist.test.images, y: mnist.test.labels, keep_prob: 1.0}))
