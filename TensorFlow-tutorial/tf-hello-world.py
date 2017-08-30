@@ -42,7 +42,7 @@ with tf.Session() as sess:
 
 
 '''linear regression'''
-
+'''
 # parameters
 learning_rate = 0.1
 training_epochs = 2000
@@ -96,5 +96,151 @@ with tf.Session() as sess:
     plt.legend()
     plt.show()
 
+'''
+'''logistic regression'''
+# MNIST
+'''
+# import MNIST data
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+
+# parameters
+learning_rate = 0.01
+training_epochs = 100
+batch_size = 50
+display_step = 1
+
+# tf Graph Input
+x = tf.placeholder(tf.float32, [None, 784]) # mnist data image of shape 28*28=784
+y = tf.placeholder(tf.float32, [None, 10]) # 0-9 digits recognition => 10 classes
+
+# Set model weights
+W = tf.Variable(tf.zeros([784, 10]))
+b = tf.Variable(tf.zeros([10]))
+
+# Construct model
+pred = tf.nn.softmax(tf.matmul(x, W) + b) # Softmax
+
+# Minimize error using cross entropy
+#cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reduction_indices=1))
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels = y,logits = pred))
+
+# Gradient Descent
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cross_entropy)
+
+# Initializing the variables
+init = tf.global_variables_initializer()
+
+# Launch the graph
+with tf.Session() as sess:
+    sess.run(init)
+
+    # Training cycle
+    for epoch in range(training_epochs):
+        avg_cost = 0.
+        total_batch = int(mnist.train.num_examples/batch_size)
+        # Loop over all batches
+        for i in range(total_batch):
+            batch_xs, batch_ys = mnist.train.next_batch(batch_size)
+            # Run optimization op (backprop) and cost op (to get loss value)
+            _, c = sess.run([optimizer, cross_entropy], feed_dict={x: batch_xs,
+                                                          y: batch_ys})
+            # Compute average loss
+            avg_cost += c / total_batch
+        # Display logs per epoch step
+        if (epoch+1) % display_step == 0:
+            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
+
+    print("Optimization Finished!")
+
+    # Test model
+    correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+    # Calculate accuracy
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    print("Accuracy:", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
+'''
+'''MNIST for expert'''
+
+# import MNIST data
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+
+learning_rate = 1e-4
+batch_size = 50
+iterations = 40000
+
+def weight_variable(shape):
+    initial = tf.truncated_normal(shape, stddev = 0.1)
+    # [filter_height, filter_width, in_channels, out_channels]
+    return tf.Variable(initial)
+
+def bias_variable(shape):
+    initial = tf.constant(0.1, shape = shape)
+    return tf.Variable(initial)
+
+def conv2d(x, W):
+    return tf.nn.conv2d(x, W, strides = [1,1,1,1], padding = 'SAME')
+
+def max_pool_2x2(x):
+    return tf.nn.max_pool(x, ksize = [1,2,2,1], strides = [1,2,2,1], padding = 'SAME')
+
+# parameters
+learning_rate = 0.01
+training_epochs = 100
+batch_size = 50
+display_step = 1
+
+# tf Graph Input
+x = tf.placeholder(tf.float32, [None, 784]) # mnist data image of shape 28*28=784
+y = tf.placeholder(tf.float32, [None, 10]) # 0-9 digits recognition => 10 classes
+
+x_image = tf.reshape(x,[-1, 28,28,1])
 
 
+# first convolutional layer
+W_conv1 = weight_variable([5, 5, 1 ,32])
+b_conv1 = bias_variable([32])
+
+h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1)+b_conv1)# 28 x 28
+h_pool1 = max_pool_2x2(h_conv1)# 14 x 14
+
+# second convolutional layer 
+W_conv2 = weight_variable([5,5,32,64])
+b_conv2 = bias_variable([64])
+
+h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2)+b_conv2) # 14 x 14
+h_pool2 = max_pool_2x2(h_conv2) # 7 x 7
+
+# densely connected layer
+W_fc1 = weight_variable([7*7*64, 1024])
+b_fc1 = bias_variable([1024])
+
+h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
+h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+
+# dropout layer
+keep_prob = tf.placeholder(tf.float32)
+h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+
+# readout layer
+W_fc2 = weight_variable([1024, 10])
+b_fc2 = bias_variable([10])
+
+y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+
+cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels = y,logits = y_conv))
+train_step = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy)
+correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y,1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for i in range(iterations):
+        batch = mnist.train.next_batch(batch_size)
+        if i%100 == 0 :
+            train_accuracy = accuracy.eval(feed_dict={x:batch[0], y:batch[1], keep_prob: 1.0})
+            print('step %d, training accuracy %g' % (i, train_accuracy))
+        train_step.run(feed_dict = {x:batch[0], y:batch[1], keep_prob: 0.5})
+
+    print('test accuracy %g' % accuracy.eval(feed_dict={
+      x: mnist.test.images, y: mnist.test.labels, keep_prob: 1.0}))
