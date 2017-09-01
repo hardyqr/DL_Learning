@@ -164,7 +164,9 @@ with tf.Session() as sess:
 
 # import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+#mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+
+mnist = input_data.read_data_sets('data/fashion', one_hot = True)
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev = 0.1)
