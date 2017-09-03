@@ -6,31 +6,14 @@ from os import sys
 import time
 import cv2
 
-'''
-def pixel_locator():
-    
-    #p: point cloud, n: center of photo, f: focal point
-    #return location of the point cloud on the photo
-    
-    p = tf.placeholder(tf.float32,[None,3])
-    n = tf.placeholder(tf.float32,[None,3])
-    f = tf.placeholder(tf.float32,[None,3])
-    v = tf.subtract(f, n) # normal vector of the photo
-    lv = tf.subtract(f, p) # line vector
-
-    vpt = tf.reduce_sum(tf.multiply(v, lv), 1)
-    
-    if(vpt == 0):
-        print("the line is parallel with the photo")
-        return None
-    else:
-        # for any point r(x,y,z) on the photo
-        t = tf.divide(tf.reduce_sum(tf.multiply(v, tf.subtract(n, p)), 1), vpt)
-
-        return tf.add(p, tf.multiply(lv,t[0])), p,n,f
-'''
 
 def pixel_locator():
+    '''
+    f: focal distance, 
+    p: position of the camera, 
+    v: direction of the camera(from center of camera to focal point)
+    x: point cloud
+    '''
     x = tf.placeholder(tf.float32,[None,3])
     p = tf.placeholder(tf.float32,[None,3])
     v = tf.placeholder(tf.float32,[None,3])
@@ -57,17 +40,47 @@ def data_loader(address):
     return original_data
 
 
-def parameter_setting():
+def parameter_setting(original_data):
     photo_center = np.array([max(original_data[:,0])*1.2,max(original_data[:,1])*1.2, max(original_data[:,2])*1.3])
     focal_dir = np.array( [0 , 0 , max(original_data[:,2])*1.5 ] )
     focal_distance = (max(original_data[:,2]) - min(original_data[:,2]))*0.3
     return photo_center, focal_dir, focal_distance
 
+
+
+def generate_photo(data, a, b, v, o):
+    '''
+    data:
+    a: length
+    b: width
+    v: direction of the camera(from center of camera to focal point)
+    o: positive direction of the photo
+    '''
+    #data = data.eval
+    #v = v.eval
+    #o = o.eval
+    #photo = np.zeros([a, b, 3])
+    photo = tf.zeros([a, b, 3])
+    #xs = np.sum(data[:, :3] * o, axis=1)
+    xs = tf.reduce_sum(data[:, :3] * o, axis=1)
+    #ys = np.sum(data[:, :3] * np.cross(o, v), axis=1)
+    ys = tf.reduce_sum(data[:, :3] * tf.cross(o, v), axis=1)
+    #ys = (b - 1) * (ys - ys.min()) / (ys.max() - ys.min())
+    #xs = (a - 1) * (xs - xs.min()) / (xs.max() - xs.min())
+
+    print("xs.shape:", xs.shape)
+    for i in range(xs.shape[0]):
+        photo[xs[i], ys[i], :] = data[i, 3:6]
+        # print(photo[int(x), int(y), :])
+    return photo
+
+#def str2vec(s):
+
 def main():
     original_data = data_loader(sys.argv[1])
     data,x,p,v,f = pixel_locator()
 
-    photo_center, focal_dir, focal_distance = parameter_setting()
+    photo_center, focal_dir, focal_distance = parameter_setting(original_data)
     
     init = tf.global_variables_initializer()
     
@@ -93,10 +106,16 @@ def main():
         print(max(data[:,0]), max(data[:,1]),max(data[:,2]))
         #print(data)
         original_data[:,:3] = data
-        #print(data.shape)
-        np.savetxt(sys.argv[2], original_data, fmt = "%.3f %.3f %.3f %i %i %i %i")
 
+
+        #print(data.shape)
+        #np.savetxt(sys.argv[2], original_data, fmt = "%.3f %.3f %.3f %i %i %i %i")
+        o = tf.constant([1,0,0],tf.float32)
+        photo = generate_photo(original_data, 400,400,v,o)
+        print(photo.shape)
+        print(photo)
 
 
 if __name__ == "__main__":
-    timeit(main,*args)
+    #timeit(main,*args)
+    main()

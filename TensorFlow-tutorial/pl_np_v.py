@@ -5,12 +5,7 @@ import time
 import cv2
 
 def calc_func(f, p, v, x):
-    '''
-    f: focal distance, 
-    p: position of the camera, 
-    v: direction of the camera(from center of camera to focal point)
-    x: point cloud
-    '''
+
     return f * v - f * f * (p + f * v - x) / (1 + np.sum((p - x) * v) / f)
 
 def timeit(func, *args, **kwargs):
