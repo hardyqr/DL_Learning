@@ -9,9 +9,10 @@ import sys
 def read_las(address):
     # Open a file in read mode:
     inFile = laspy.file.File(address)
-    
+
+    #print(inFile.points[-1])
     # Grab a numpy dataset of our clustering dimensions:
-    dataset = np.vstack([inFile.X, inFile.Y, inFile.Z]).transpose()
+    dataset = np.vstack([inFile.X, inFile.Y, inFile.Z, inFile.red, inFile.green, inFile.blue, inFile.raw_classification]).transpose()
     print(dataset.shape)
     return dataset
 
@@ -25,3 +26,6 @@ print(neighbors[0])
 print("Distances: ")
 print(neighbors[1])
 '''
+
+if __name__ == "__main__":
+    read_las(sys.argv[1])
