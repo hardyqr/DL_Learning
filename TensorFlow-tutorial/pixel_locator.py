@@ -5,6 +5,7 @@ import numpy as np
 from os import sys
 import time
 import cv2
+from read_las import read_las
 
 
 def pixel_locator():
@@ -47,37 +48,62 @@ def parameter_setting(original_data):
     return photo_center, focal_dir, focal_distance
 
 
-
 def generate_photo(data, a, b, v, o):
-    '''
-    data:
-    a: length
-    b: width
-    v: direction of the camera(from center of camera to focal point)
-    o: positive direction of the photo
-    '''
+    photo = np.zeros([a, b, 3])
+    print(data[:,:3].shape)
+
+    print(o.shape)
+    #print(v.shape)
+
+    yd = np.cross(o,v)
+    print(yd)
+    print(yd.shape)
+    xs = np.sum(data[:, :3] * o, axis=1)
+    ys = np.sum(data[:, :3] * yd, axis=1)
+    xs = (a - 1) * (xs - xs.min()) / (xs.max() - xs.min())
+    ys = (b - 1) * (ys - ys.min()) / (ys.max() - ys.min())
+    for i, (x,y) in enumerate(zip(xs, ys)):
+        photo[int(x), int(y), :] = data[i, 3:6]
+        # print(photo[int(x), int(y), :])
+    return photo
+
+'''
+def generate_photo(data, a, b, v, o):
+    #data:
+    #a: length
+    #b: width
+    #v: direction of the camera(from center of camera to focal point)
+    #o: positive direction of the photo
     #data = data.eval
     #v = v.eval
     #o = o.eval
     #photo = np.zeros([a, b, 3])
-    photo = tf.zeros([a, b, 3])
+    photo = np.zeros([a, b, 3])
     #xs = np.sum(data[:, :3] * o, axis=1)
-    xs = tf.reduce_sum(data[:, :3] * o, axis=1)
+    xs = np.sum(data[:, :3] * o, axis=0)
+    #print("xs.shape:", xs.shape)
+
     #ys = np.sum(data[:, :3] * np.cross(o, v), axis=1)
-    ys = tf.reduce_sum(data[:, :3] * tf.cross(o, v), axis=1)
+    ys = np.sum(data[:, :3] * np.cross(o, v), axis=0)
     #ys = (b - 1) * (ys - ys.min()) / (ys.max() - ys.min())
     #xs = (a - 1) * (xs - xs.min()) / (xs.max() - xs.min())
 
     print("xs.shape:", xs.shape)
+    #photo = []
     for i in range(xs.shape[0]):
+        #x_ = int(xs[i])
+        #y_ = int(ys[i])
+        #x_ = int(str(''.join(xs[i])))
+        #y_ = int(str(''.join(ys[i])))
         photo[xs[i], ys[i], :] = data[i, 3:6]
         # print(photo[int(x), int(y), :])
     return photo
-
+'''
 #def str2vec(s):
 
 def main():
-    original_data = data_loader(sys.argv[1])
+    original_data = read_las(sys.argv[1])
+    #original_data = data_loader(sys.argv[1])
     data,x,p,v,f = pixel_locator()
 
     photo_center, focal_dir, focal_distance = parameter_setting(original_data)
@@ -110,10 +136,18 @@ def main():
 
         #print(data.shape)
         #np.savetxt(sys.argv[2], original_data, fmt = "%.3f %.3f %.3f %i %i %i %i")
-        o = tf.constant([1,0,0],tf.float32)
-        photo = generate_photo(original_data, 400,400,v,o)
-        print(photo.shape)
+        #original_data = original_data.eval
+            
+        o = np.array([1,0,0])
+        #v = v.eval
+        #v = v[0].eval
+        #print("v:", v)
+        #print("o:", o)
+        photo = generate_photo(original_data, 400,400,focal_dir,o)
+        #print(photo.shape)
         print(photo)
+        print(photo[0])
+        cv2.imwrite("test.jpg", photo)
 
 
 if __name__ == "__main__":
