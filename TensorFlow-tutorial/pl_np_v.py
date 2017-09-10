@@ -38,7 +38,8 @@ def main(ifn, ofn, f, p, v, o):
     else:
         data = read_las(ifn).astype(np.float32)
 
-    data[:,:3]*=1e-4
+    data[:,:3]*=1e-1# for eth zurich
+    #data[:,:3]*=1e-4
     print("data stat")
     print("x max: ", max(data[:,0]), "min x:", min(data[:,0]))
     print("y max: ", max(data[:,1]), "min y:", min(data[:,1]))
@@ -51,7 +52,7 @@ def main(ifn, ofn, f, p, v, o):
     #print(np.max(data, axis=1))
     #np.savetxt("tmp.txt", data, fmt="%.3f")
     photo,labels = gen_photo(data, 448, 448, v, o)
-    #print(photo)
+    print(photo)
     cv2.imwrite(ofn+".jpg", photo)
     print(labels[0],labels[300])
     #print(labels)
