@@ -165,8 +165,8 @@ with tf.Session() as sess:
 # import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 #mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-
-mnist = input_data.read_data_sets('data/fashion', one_hot = True)
+mnist = input_data.read_data_sets("/Users/Fangyu/Documents/GitHub/DL_Learning/test_with_MINST/MNIST_data/", one_hot = True)
+#mnist = input_data.read_data_sets('data/fashion', one_hot = True)
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev = 0.1)
@@ -184,8 +184,8 @@ def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize = [1,2,2,1], strides = [1,2,2,1], padding = 'SAME')
 
 # parameters
-learning_rate = 1e-4
-iterations = 40000
+learning_rate = 1e-3
+iterations = 2000
 batch_size = 100
 
 
@@ -215,13 +215,22 @@ W_conv3 = weight_variable([4,4,64,64])
 b_conv3 = bias_variable([64])
 
 h_conv3 = tf.nn.relu(conv2d(h_pool2, W_conv3)+b_conv3) # 7 x 7
+h_pool3 = max_pool_2x2(h_conv3) # 4 x 4
+
+
+# fourth convolutional layer
+W_conv4 = weight_variable([4,4,64,128])
+b_conv4 = bias_variable([128])
+
+h_conv4 = tf.nn.relu(conv2d(h_pool3, W_conv4)+b_conv4) # 4 x 4
+#h_pool3 = max_pool_2x2(h_conv3) # 4 x 4
 
 # densely connected layer
-W_fc1 = weight_variable([7*7*64, 1024])
+W_fc1 = weight_variable([4*4*128, 1024])
 b_fc1 = bias_variable([1024])
 
-h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
-h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+h_conv4_flat = tf.reshape(h_conv4, [-1, 4*4*128])
+h_fc1 = tf.nn.relu(tf.matmul(h_conv4_flat, W_fc1) + b_fc1)
 
 # dropout layer
 keep_prob = tf.placeholder(tf.float32)
@@ -245,7 +254,8 @@ with tf.Session() as sess:
         if i%100 == 0 :
             train_accuracy = accuracy.eval(feed_dict={x:batch[0], y:batch[1], keep_prob: 1.0})
             print('step %d, training accuracy %.4f' % (i, train_accuracy))
-        train_step.run(feed_dict = {x:batch[0], y:batch[1], keep_prob: 0.5})
+        else:
+            train_step.run(feed_dict = {x:batch[0], y:batch[1], keep_prob: 0.5})
 
     print('test accuracy %.4f' % accuracy.eval(feed_dict={
       x: mnist.test.images, y: mnist.test.labels, keep_prob: 1.0}))
