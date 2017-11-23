@@ -1,2 +1,0 @@
-python 3DCNN_Output_Pre_Evaluation.py
-@pause
